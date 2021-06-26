@@ -1,5 +1,5 @@
 import { Container, makeStyles } from "@material-ui/core";
-import { DatePicker } from "./components/DatePicker";
+import { DatePickerField } from "./components/DatePicker";
 import { Product } from "./components/Product";
 
 const useStyles = makeStyles(() => {
@@ -16,7 +16,7 @@ export const Calculator = () => {
   return (
     <Container className={classes.container}>
       <Product />
-      <DatePicker />
+      <DatePickerField />
     </Container>
   );
 };

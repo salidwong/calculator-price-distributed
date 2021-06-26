@@ -9,7 +9,7 @@ export const MapModal = () => {
     // Important! Always set the container height explicitly
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyDqyHbnhdks8FRGsscPc3adtV2Dt-LXEqc" }}
+        bootstrapURLKeys={{ key: "" }}
         defaultCenter={{
           lat: 13.7563,
           lng: 100.5018,

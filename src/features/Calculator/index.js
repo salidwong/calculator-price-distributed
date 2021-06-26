@@ -1,11 +1,22 @@
-import { Typography } from "@material-ui/core";
-import { default as NumberFormat } from "react-number-format";
+import { Container, makeStyles } from "@material-ui/core";
+import { DatePicker } from "./components/DatePicker";
+import { Product } from "./components/Product";
+
+const useStyles = makeStyles(() => {
+  return {
+    container: {
+      marginTop: "20px",
+    },
+  };
+});
 
 export const Calculator = () => {
+  const classes = useStyles();
+
   return (
-    <>
-      <Typography>Test</Typography>
-      <NumberFormat value="20000" />
-    </>
+    <Container className={classes.container}>
+      <Product />
+      <DatePicker />
+    </Container>
   );
 };

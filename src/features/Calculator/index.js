@@ -1,11 +1,16 @@
-import { Container, makeStyles } from "@material-ui/core";
+import { Container, makeStyles, Paper } from "@material-ui/core";
 import { DatePickerField } from "./components/DatePicker";
+import { Location } from "./components/Location";
+import { MapModal } from "./components/MapModal";
 import { Product } from "./components/Product";
 
 const useStyles = makeStyles(() => {
   return {
     container: {
-      marginTop: "20px",
+      marginTop: "50px",
+    },
+    paper: {
+      padding: "20px",
     },
   };
 });
@@ -15,8 +20,12 @@ export const Calculator = () => {
 
   return (
     <Container className={classes.container}>
-      <Product />
-      <DatePickerField />
+      <Paper className={classes.paper}>
+        <Product />
+        <DatePickerField />
+        <Location />
+        <MapModal />
+      </Paper>
     </Container>
   );
 };

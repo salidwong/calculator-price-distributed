@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchProduct } from "../api/product";
+import { createSlice } from "@reduxjs/toolkit";
 import format from "date-fns/format";
 
 const today = new Date();
@@ -14,12 +13,6 @@ const initialState = {
   tomorrow: format(tomorrow, "yyyy/MM/dd"),
   nextWeek: format(nextWeek, "yyyy/MM/dd"),
 };
-
-export const getProduct = createAsyncThunk("product/fetchProduct", async () => {
-  const response = await fetchProduct();
-
-  return response;
-});
 
 export const datePicker = createSlice({
   name: "date",

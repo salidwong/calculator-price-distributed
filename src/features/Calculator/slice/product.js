@@ -4,6 +4,8 @@ import { fetchProduct } from "../api/product";
 const initialState = {
   list: [],
   selectedProductId: "0",
+  maxProduct: 0,
+  pricePerUnit: 0,
   status: "idle",
 };
 
@@ -21,6 +23,16 @@ export const product = createSlice({
       const { payload } = action;
       state.selectedProductId = payload;
     },
+    setMaxProduct: (state, action) => {
+      const { payload } = action;
+      console.log("payload", payload);
+      state.maxProduct = payload;
+    },
+    setPricePerUnit: (state, action) => {
+      const { payload } = action;
+
+      state.pricePerUnit = payload;
+    },
   },
 
   extraReducers: (builder) => {
@@ -35,12 +47,15 @@ export const product = createSlice({
   },
 });
 
-export const { setSelectedProductId } = product.actions;
+export const { setSelectedProductId, setMaxProduct, setPricePerUnit } =
+  product.actions;
 
 export const selectProduct = (state) => state.product;
 export const selectProductList = (state) => state.product.list;
 export const selectStatus = (state) => state.product.status;
 export const selectSelectedProductId = (state) =>
   state.product.selectedProductId;
+export const selectMaxProduct = (state) => state.product.maxProduct;
+export const selectPricePerUnit = (state) => state.product.pricePerUnit;
 
 export default product.reducer;

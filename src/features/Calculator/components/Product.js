@@ -1,6 +1,5 @@
 import {
   Typography,
-  Button,
   Grid,
   FormControl,
   Select,
@@ -13,6 +12,7 @@ import {
   getProduct,
   selectProductList,
   selectSelectedProductId,
+  setPricePerUnit,
   setSelectedProductId,
 } from "../slice/product";
 
@@ -38,7 +38,11 @@ export const Product = () => {
     const { target } = e;
     const { value } = target;
 
+    const findProduct = products.find((p) => p.id === value);
+    const { price_per_unit } = findProduct;
+
     dispatch(setSelectedProductId(value));
+    dispatch(setPricePerUnit(price_per_unit));
   };
 
   return (

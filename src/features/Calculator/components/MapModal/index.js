@@ -6,7 +6,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import GoogleMapReact from "google-map-react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addLocationByIndex,
@@ -118,6 +117,7 @@ export const MapModal = () => {
 
       <div style={{ height: "100vh", width: "100%" }}>
         <GoogleMapReact
+          //run google map in developer mode  process.env.REACT_APP_GOOGLE_MAP_API_KEY for the future
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
           defaultCenter={{
             lat: 13.7563,

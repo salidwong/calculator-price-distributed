@@ -1,4 +1,4 @@
-import { Container, makeStyles, Paper } from "@material-ui/core";
+import { Container, makeStyles, Paper, Typography } from "@material-ui/core";
 import { DatePickerField } from "./components/DatePicker";
 import { Location } from "./components/Location";
 import { MapModal } from "./components/MapModal";
@@ -22,7 +22,8 @@ export const Calculator = () => {
 
   return (
     <Container className={classes.container}>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={4}>
+        <Typography align="center">CALCULATOR</Typography>
         <Product />
         <DatePickerField />
         <Location />

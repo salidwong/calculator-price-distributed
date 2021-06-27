@@ -138,7 +138,7 @@ export const Item = ({ selectedLocation, index }) => {
         </Grid>
       )}
       <Grid item xs={2}>
-        <Typography>{cost}</Typography>
+        <Typography>{Number(cost).toFixed(2)}</Typography>
       </Grid>
       <Grid item xs={2}>
         <Grid container spacing={2}>

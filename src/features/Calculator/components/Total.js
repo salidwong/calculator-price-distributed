@@ -80,7 +80,7 @@ export const Total = () => {
           <Typography>Total Cost</Typography>
         </Grid>
         <Grid item>
-          <Typography>{totalCost}</Typography>
+          <Typography>{Number(totalCost).toFixed(2)}</Typography>
         </Grid>
       </Grid>
 

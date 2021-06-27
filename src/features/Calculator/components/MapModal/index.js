@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Dialog,
-  DialogContent,
   DialogTitle,
   Typography,
 } from "@material-ui/core";

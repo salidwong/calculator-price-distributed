@@ -1,6 +1,8 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSelectedDate } from "../../slice/datePicker";
 import { setIsMapOpen } from "../../slice/location";
+import { selectSelectedProductId } from "../../slice/product";
 
 const useStyles = makeStyles(() => {
   return {
@@ -13,6 +15,8 @@ const useStyles = makeStyles(() => {
 export const Title = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const selectedDate = useSelector(selectSelectedDate);
+  const selectedProductId = useSelector(selectSelectedProductId);
 
   return (
     <Grid
@@ -35,6 +39,7 @@ export const Title = () => {
       </Grid>
       <Grid item xs={2}>
         <Button
+          disabled={selectedProductId === "0" || !selectedDate}
           size="small"
           variant="contained"
           color="primary"

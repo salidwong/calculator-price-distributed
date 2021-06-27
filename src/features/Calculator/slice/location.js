@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchLocation } from "../api/location";
-import { selectMaxProduct } from "./product";
+import { fetchLocation, postLocation } from "../api/location";
 
 const initialState = {
   availableLocations: [],
   selectedLocationIdList: [],
   selectedLocationList: [],
+  totalUnit: 0,
   isMapOpen: false,
   status: "idle",
 };
@@ -14,6 +14,15 @@ export const getLocation = createAsyncThunk(
   "location/fetchLocation",
   async () => {
     const response = await fetchLocation();
+
+    return response;
+  }
+);
+
+export const submitLocation = createAsyncThunk(
+  "location/postLocation",
+  async (data) => {
+    const response = await postLocation(data);
 
     return response;
   }
@@ -74,7 +83,6 @@ export const location = createSlice({
     setIsEditByIndex: (state, action) => {
       const { payload } = action;
       const { index, list, value } = payload;
-      console.log("action", action);
 
       const currentState = list[index];
       const newState = { ...currentState, isEdit: value };
@@ -83,6 +91,29 @@ export const location = createSlice({
       newList[index] = newState;
 
       state.selectedLocationList = newList;
+    },
+    setTotalUnit: (state, action) => {
+      const { payload } = action;
+      const { result } = payload;
+
+      state.totalUnit = result;
+    },
+    setWarningMessageByIndex: (state, action) => {
+      const { payload } = action;
+      const { index, message, list } = payload;
+
+      const currentState = list[index];
+      const newState = { ...currentState, warningMessage: message };
+
+      const newList = [...list];
+      newList[index] = newState;
+
+      state.selectedLocationList = newList;
+    },
+    setLocationStatus: (state, action) => {
+      const { payload } = action;
+
+      state.status = payload;
     },
   },
 
@@ -97,6 +128,13 @@ export const location = createSlice({
 
         state.status = "idle";
         state.availableLocations = list;
+      })
+
+      .addCase(submitLocation.fulfilled, (state, action) => {
+        const { payload } = action;
+        const { status } = payload;
+
+        state.status = status;
       });
   },
 });
@@ -109,6 +147,9 @@ export const {
   setSelectedLocationList,
   updateSelectedLocationList,
   setIsEditByIndex,
+  setTotalUnit,
+  setWarningMessageByIndex,
+  setLocationStatus,
 } = location.actions;
 
 export const selectLocation = (state) => state.location;
@@ -119,6 +160,8 @@ export const selectSelectedLocationIdList = (state) =>
   state.location.selectedLocationIdList;
 export const selectSelectedLocationList = (state) =>
   state.location.selectedLocationList;
+export const selectTotalUnit = (state) => state.location.totalUnit;
+export const selectLocationStatus = (state) => state.location.status;
 
 export const addLocationByIndex = (index) => (dispatch, getState) => {
   const availableLocations = selectAvailableLocations(getState());
@@ -138,6 +181,7 @@ export const addLocationByIndex = (index) => (dispatch, getState) => {
     unit: 0,
     cost: 0,
     isEdit: false,
+    warningMessage: "",
   };
   const mergeLocationList = [...selectedLocationList, { ...location }];
 

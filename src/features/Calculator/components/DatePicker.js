@@ -15,6 +15,7 @@ import {
   setMaxProduct,
 } from "../slice/product";
 import differenceInDays from "date-fns/differenceInDays";
+import { useMemo } from "react";
 
 export const DatePickerField = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export const DatePickerField = () => {
   const selectedProductId = useSelector(selectSelectedProductId);
 
   const handleDateChange = (selectedDate) => {
-    const formatDate = format(selectedDate, "yyyy/MM/dd");
+    const formatDate = format(selectedDate, "yyyy-MM-dd");
 
     const findProduct = products.find((p) => p.id === selectedProductId);
     const { max_production } = findProduct;
@@ -55,6 +56,14 @@ export const DatePickerField = () => {
     dispatch(setMaxProduct(maxProductWithSelectedDate));
   };
 
+  const dateWarning = useMemo(() => {
+    if (selectedProductId === "0") return "Please select product first";
+
+    if (!selectedDate) return "Date should start from tomorrow";
+
+    return "";
+  }, [selectedProductId, selectedDate]);
+
   return (
     <Grid container spacing={6} alignItems="center">
       <Grid item>
@@ -63,6 +72,10 @@ export const DatePickerField = () => {
       <Grid item md={6}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
+            emptyLabel="Please select date"
+            helperText={dateWarning}
+            disabled={selectedProductId === "0"}
+            error={selectedProductId === "0" || !selectedDate}
             format="dd/MM/yyyy"
             minDate={tomorrow}
             maxDate={nextWeek}

@@ -10,7 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteLocationByIndex,
   selectSelectedLocationList,
+  selectTotalUnit,
   setIsEditByIndex,
+  setTotalUnit,
+  setWarningMessageByIndex,
   updateSelectedLocationList,
 } from "../../slice/location";
 import { selectMaxProduct, selectPricePerUnit } from "../../slice/product";
@@ -34,12 +37,10 @@ export const Item = ({ selectedLocation, index }) => {
   const maxProduct = useSelector(selectMaxProduct);
   const pricePerUnit = useSelector(selectPricePerUnit);
   const selectedLocationList = useSelector(selectSelectedLocationList);
+  const totalUnit = useSelector(selectTotalUnit);
   const classes = useStyles();
 
-  console.log("maxProduct", maxProduct);
-  console.log("maxDist", maxDist);
-  console.log("unit", unit);
-  const totalUnit = useMemo(() => {
+  const sumUnit = useMemo(() => {
     let result = 0;
 
     selectedLocationList.forEach((location) => {
@@ -54,13 +55,46 @@ export const Item = ({ selectedLocation, index }) => {
     return result;
   }, [selectedLocationList]);
 
-  console.log("totalUnit", totalUnit);
-
   const withValueLimit = ({ floatValue, value }) => {
     if (!value) return true;
 
-    return floatValue <= maxDist && floatValue <= maxProduct - totalUnit;
+    if (floatValue > maxDist) {
+      dispatch(
+        setWarningMessageByIndex({
+          index,
+          list: selectedLocationList,
+          message: `maximum location is ${maxDist}`,
+        })
+      );
+    }
+
+    return floatValue <= maxDist;
   };
+
+  const handleConfirmClick = () => {
+    if (unit <= maxProduct - totalUnit) {
+      dispatch(
+        setIsEditByIndex({
+          index,
+          list: selectedLocationList,
+          value: false,
+        })
+      );
+      dispatch(setTotalUnit({ result: sumUnit }));
+    } else {
+      dispatch(
+        setWarningMessageByIndex({
+          index,
+          list: selectedLocationList,
+          message: `maximum product is ${maxProduct}`,
+        })
+      );
+    }
+  };
+
+  const warningMessage = useMemo(() => {
+    return selectedLocationList[index].warningMessage;
+  }, [selectedLocationList, index]);
 
   return (
     <Grid
@@ -76,11 +110,14 @@ export const Item = ({ selectedLocation, index }) => {
       {isEdit && (
         <Grid item xs={2}>
           <CustomFieldInput
+            error={warningMessage !== ""}
+            helperText={!warningMessage ? "" : warningMessage}
             isAllowed={withValueLimit}
             thousandSeparator
             value={unit || ""}
             onValueChange={(values) => {
               const { floatValue } = values;
+              console.log("floatValue", floatValue);
               dispatch(
                 updateSelectedLocationList({
                   value: floatValue,
@@ -111,15 +148,24 @@ export const Item = ({ selectedLocation, index }) => {
                 size="small"
                 variant="outlined"
                 color="primary"
-                onClick={() =>
+                onClick={() => {
+                  const currentValue = selectedLocationList[index].unit;
+
                   dispatch(
                     setIsEditByIndex({
                       index,
                       list: selectedLocationList,
                       value: true,
                     })
-                  )
-                }
+                  );
+                  dispatch(
+                    setTotalUnit({
+                      result: !currentValue
+                        ? totalUnit - 0
+                        : totalUnit - currentValue,
+                    })
+                  );
+                }}
               >
                 EDIT
               </Button>
@@ -129,15 +175,7 @@ export const Item = ({ selectedLocation, index }) => {
                 size="small"
                 variant="outlined"
                 color="primary"
-                onClick={() =>
-                  dispatch(
-                    setIsEditByIndex({
-                      index,
-                      list: selectedLocationList,
-                      value: false,
-                    })
-                  )
-                }
+                onClick={handleConfirmClick}
               >
                 OK
               </Button>
@@ -149,7 +187,18 @@ export const Item = ({ selectedLocation, index }) => {
               size="small"
               variant="outlined"
               color="secondary"
-              onClick={() => dispatch(deleteLocationByIndex(index))}
+              onClick={() => {
+                const currentValue = selectedLocationList[index].unit;
+
+                dispatch(deleteLocationByIndex(index));
+                dispatch(
+                  setTotalUnit({
+                    result: !currentValue
+                      ? totalUnit - 0
+                      : totalUnit - currentValue,
+                  })
+                );
+              }}
             >
               X
             </Button>

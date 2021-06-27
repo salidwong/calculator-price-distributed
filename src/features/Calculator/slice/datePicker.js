@@ -9,9 +9,9 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 nextWeek.setDate(nextWeek.getDate() + 7);
 
 const initialState = {
-  selectedDate: format(tomorrow, "yyyy/MM/dd"),
-  tomorrow: format(tomorrow, "yyyy/MM/dd"),
-  nextWeek: format(nextWeek, "yyyy/MM/dd"),
+  selectedDate: null,
+  tomorrow: format(tomorrow, "yyyy-MM-dd"),
+  nextWeek: format(nextWeek, "yyyy-MM-dd"),
 };
 
 export const datePicker = createSlice({

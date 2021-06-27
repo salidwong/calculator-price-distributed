@@ -1,19 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSelectedDate } from "../../slice/datePicker";
-import {
-  getLocation,
-  selectAvailableLocations,
-  selectSelectedLocationIdList,
-  selectSelectedLocationList,
-} from "../../slice/location";
-import {
-  selectProductList,
-  selectSelectedProductId,
-} from "../../slice/product";
+import { getLocation, selectSelectedLocationList } from "../../slice/location";
 import { Item } from "./Item";
 import { Title } from "./Title";
-import differenceInDays from "date-fns/differenceInDays";
 
 export const Location = () => {
   const dispatch = useDispatch();

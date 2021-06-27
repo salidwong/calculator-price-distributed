@@ -3,6 +3,8 @@ import { DatePickerField } from "./components/DatePicker";
 import { Location } from "./components/Location";
 import { MapModal } from "./components/MapModal";
 import { Product } from "./components/Product";
+import { SuccessModal } from "./components/SuccessModal";
+import { Total } from "./components/Total";
 
 const useStyles = makeStyles(() => {
   return {
@@ -25,6 +27,8 @@ export const Calculator = () => {
         <DatePickerField />
         <Location />
         <MapModal />
+        <Total />
+        <SuccessModal />
       </Paper>
     </Container>
   );
